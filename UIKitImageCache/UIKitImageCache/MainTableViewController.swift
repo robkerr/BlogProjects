@@ -23,6 +23,11 @@ class MainTableViewController: UITableViewController {
         "https://www.robkerr.com/content/images/2020/12/news.jpg",
         "https://www.robkerr.com/content/images/2020/12/architecture.jpg",
         "https://www.robkerr.com/content/images/2020/12/noSuchImageOnServer.jpg",
+        "https://www.robkerr.com/content/images/2020/12/design.jpg",
+        
+        "https://www.robkerr.com/content/images/2020/12/news.jpg",
+        "https://www.robkerr.com/content/images/2020/12/architecture.jpg",
+        "https://www.robkerr.com/content/images/2020/12/noSuchImageOnServer.jpg",
         "https://www.robkerr.com/content/images/2020/12/design.jpg"
     ]
 
@@ -82,9 +87,12 @@ class MainTableViewController: UITableViewController {
         let obj = cellData[indexPath.row]
 
         if let imageView = cell.viewWithTag(1) as? UIImageView {
+            
+            let method:FetchMethod = indexPath.row < 3 ? .nsCache : .urlCache
+            
             imageView.loadImage(urlString: obj.imageUrl,
                                 placeholderImage: obj.placeholderImage,
-                                errorImage: obj.errorImage)
+                                errorImage: obj.errorImage, fetchMethod: method)
         }
 
         return cell
