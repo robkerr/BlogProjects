@@ -24,7 +24,7 @@
                                 </constraints>
                             </view>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="19" translatesAutoresizingMaskIntoConstraints="NO" id="ORe-wN-OGA">
-                                <rect key="frame" x="30" y="478" width="354" height="241.5"/>
+                                <rect key="frame" x="30" y="478" width="354" height="310.5"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Ellipse Count" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dpa-41-7Uv">
                                         <rect key="frame" x="0.0" y="0.0" width="354" height="20.5"/>
@@ -71,6 +71,19 @@
                                         </state>
                                         <connections>
                                             <action selector="sendEmailTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="sO1-Ar-n4O"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="W1s-pB-82h">
+                                        <rect key="frame" x="0.0" y="260.5" width="354" height="50"/>
+                                        <color key="backgroundColor" red="0.082201458510000006" green="0.19789317249999999" blue="0.27839443089999999" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="50" id="wXq-RQ-4ZC"/>
+                                        </constraints>
+                                        <state key="normal" title="Save Image to Storage">
+                                            <color key="titleColor" red="0.95295006039999997" green="0.94900447129999999" blue="0.95293420549999996" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="SaveImageTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="clZ-6g-Psc"/>
                                         </connections>
                                     </button>
                                 </subviews>

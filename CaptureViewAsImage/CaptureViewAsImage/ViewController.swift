@@ -46,6 +46,17 @@ class ViewController: UIViewController {
     @IBAction func textFieldDidEndOnExit(textField: UITextField) {
         textField.resignFirstResponder()
     }
+    
+    @IBAction func SaveImageTapped(_ sender: UIButton) {
+        if let jpegData = designView.asJpeg {
+            let filename = UUID().uuidString + ".jpg"
+            let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
+            let docDirectoryPath = paths[0]
+            let filePath = docDirectoryPath.appendingPathComponent(filename)
+            let success = FileManager.default.createFile(atPath: filePath.path, contents: jpegData, attributes: nil)
+            print("Saved success=\(success), filename=\(filePath.path)")
+        }
+    }
 }
 
 
