@@ -54,8 +54,21 @@ class ViewController: UIViewController {
             let docDirectoryPath = paths[0]
             let filePath = docDirectoryPath.appendingPathComponent(filename)
             let success = FileManager.default.createFile(atPath: filePath.path, contents: jpegData, attributes: nil)
-            print("Saved success=\(success), filename=\(filePath.path)")
+            showAlert(title: success ? "Success" : "Failed", message: filePath.path)
+            print(filePath.path)
         }
+    }
+    
+    private func showAlert(title: String, message: String) {
+        let alertController =
+            UIAlertController(title: title,
+                              message: message,
+                              preferredStyle: .alert)
+        
+        let okAction = UIAlertAction(title: "OK", style: .default, handler: nil)
+        alertController.addAction(okAction)
+        
+        self.present(alertController, animated: true, completion: nil)
     }
 }
 
