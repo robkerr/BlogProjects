@@ -51,10 +51,14 @@
                                             <action selector="changeSegmentColor:" destination="BYZ-38-t0r" eventType="valueChanged" id="PHo-oS-jf8"/>
                                         </connections>
                                     </segmentedControl>
-                                    <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="rob@kerr.cc" borderStyle="roundedRect" placeholder="email address" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="gDW-rA-GQF">
+                                    <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="email address" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="gDW-rA-GQF">
                                         <rect key="frame" x="0.0" y="138.5" width="354" height="34"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                         <textInputTraits key="textInputTraits" textContentType="email"/>
+                                        <connections>
+                                            <action selector="textFieldDidEndOnExitWithTextField:" destination="BYZ-38-t0r" eventType="editingDidEndOnExit" id="9qV-NU-wp3"/>
+                                            <outlet property="delegate" destination="BYZ-38-t0r" id="4D1-Ca-12K"/>
+                                        </connections>
                                     </textField>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4CQ-gT-tGx">
                                         <rect key="frame" x="0.0" y="191.5" width="354" height="50"/>

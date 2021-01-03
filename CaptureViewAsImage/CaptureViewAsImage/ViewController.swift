@@ -42,6 +42,10 @@ class ViewController: UIViewController {
             print("Email cannot be sent")
         }
     }
+    
+    @IBAction func textFieldDidEndOnExit(textField: UITextField) {
+        textField.resignFirstResponder()
+    }
 }
 
 
