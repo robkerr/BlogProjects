@@ -1,0 +1,12 @@
+{
+	"name": "Ann Arbor",
+	"temp": 22.73,
+	"feelsLike": 11.17,
+	"tempMin": 21.2,
+	"tempMax": 24.01,
+	"pressure": 1011,
+	"humidity": 86,
+	"visibility": 10000,
+	"windSpeed": 11.5,
+	"windDirection": 200
+}
