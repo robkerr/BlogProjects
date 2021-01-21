@@ -5,26 +5,58 @@
 //  Created by Rob Kerr on 1/20/21.
 //
 
-import Foundation
+import UIKit
+import os
 
-class EventViewModel : Identifiable, ObservableObject {
+class LocationViewModel : Identifiable, ObservableObject {
     var id = UUID()
     
-    @Published var locationInfo: LocationInfo?
+    let concurrentQueue = DispatchQueue(label: "com.cuvenx.fetchqueue", attributes: .concurrent)
+    let concurrentFetchGroup = DispatchGroup()
+    let logger = Logger(subsystem: "com.cuvenx.concurrentdisptachqueue", category: "locationviewmodel")
     
-    func fetchEvents() {
+    @Published var locationInfo: LocationInfo?
+    @Published var locationImage: UIImage?
+    
+    func fetchDataFromApi() {
+        var weatherData: Weather?
+        var locationData: LocationInfo?
         
-        DataService.sharedInstance.fetchWeather { [weak self] (weather) in
-            if let weather = weather, let self = self {
-                
+
+        // Dispatch the weather API fetch to the background thread queue
+        concurrentFetchGroup.enter()
+        self.concurrentQueue.async {
+            self.logger.info("Dispatch fetchWeather from View Model")
+            DataService.sharedInstance.fetchWeather { [weak self] (response) in
+                weatherData = response
+                self?.concurrentFetchGroup.leave()
             }
         }
         
-        DataService.sharedInstance.fetchLocationInfo { [weak self] (locInfo) in
-            if let locInfo = locInfo, let self = self {
-                
+        // Dispatch the location API fetch to the background thread queue
+        concurrentFetchGroup.enter()
+        self.concurrentQueue.async {
+            self.logger.info("Dispatch fetchLocationInfo from View Model")
+            DataService.sharedInstance.fetchLocationInfo { [weak self] (response) in
+                locationData = response
+                DataService.sharedInstance.fetchImage(url: response?.imageUrl) { [weak self] image in
+                    DispatchQueue.main.async {
+                        self?.locationImage = image
+                    }
+                    self?.concurrentFetchGroup.leave()
+                }
             }
         }
         
+        // Provide a block to execute when both API requests have completed
+        //concurrentFetchGroup.notify(queue: DispatchQueue.global(qos: .background)) {
+        concurrentFetchGroup.notify(queue: DispatchQueue.main) {
+            self.logger.info("All API requests completed. Updating data model for UI refresh")
+            if var locData = locationData {
+                locData.weather = weatherData
+                // Assigning this observable will trigger a UI update
+                self.locationInfo = locData
+            }
+        }
     }
 }

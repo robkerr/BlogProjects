@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import UIKit
 import os
 
 public class DataService {
@@ -22,29 +23,84 @@ public class DataService {
         return SingletonWrapper.singleton
     }
     
+    let session = URLSession(configuration: URLSessionConfiguration.default, delegate: nil, delegateQueue: nil)
     let logger = Logger(subsystem: "com.cuvenx.concurrentdisptachqueue", category: "dataservice")
     
-    func fetchWeather(completion: @escaping (_ events: [Weather]?) -> Void) {
-        do {
-            if let jsonData = "".data(using: .utf8) {
-                let weather = try JSONDecoder().decode([Weather].self, from: jsonData)
-                completion(weather)
-            }
-        } catch {
-            logger.log(level: .error, "weather fetch exception: \(error.localizedDescription)")
+    // NOTE: this web request doesn't include error handling and shouldn't be used as-is for production purposes
+    func fetchWeather(completion: @escaping (_ events: Weather?) -> Void)  {
+        guard let url = URL(string: Endpoint.weather.rawValue) else {
             completion(nil)
+             return
         }
+        
+        var request = URLRequest(url: url)
+        request.httpMethod = "GET"
+      
+        
+        let task = self.session.dataTask(with: request) { (data, _, _) in
+            if let jsonData = data {
+                do {
+                    let obj = try JSONDecoder().decode(Weather.self, from: jsonData)
+                    self.logger.info("Weather API returns, sending data back to view model")
+                    completion(obj)
+                }
+                catch {
+                    self.logger.log(level: .error, "weather decode exception: \(error.localizedDescription)")
+                    completion(nil)
+                }
+            }
+        }
+        
+        logger.info("Fetching weather from API...")
+        task.resume()
     }
     
-    func fetchLocationInfo(completion: @escaping (_ events: [LocationInfo]?) -> Void) {
-        do {
-            if let jsonData = "".data(using: .utf8) {
-                let locationInfo = try JSONDecoder().decode([LocationInfo].self, from: jsonData)
-                completion(locationInfo)
-            }
-        } catch {
-            logger.log(level: .error, "weather fetch exception: \(error.localizedDescription)")
+    // NOTE: this web request doesn't include error handling and shouldn't be used as-is for production purposes
+    func fetchLocationInfo(completion: @escaping (_ events: LocationInfo?) -> Void) {
+        guard let url = URL(string: Endpoint.locationInfo.rawValue) else {
             completion(nil)
+            return
         }
+        
+        var request = URLRequest(url: url)
+        request.httpMethod = "GET"
+        
+        let task = self.session.dataTask(with: request) { (data, _, _) in
+            if let jsonData = data {
+                do {
+                    let obj = try JSONDecoder().decode(LocationInfo.self, from: jsonData)
+                    self.logger.info("Location info API returns, sending data back to view model (after 3 second delay)...")
+                    DispatchQueue.global().asyncAfter(deadline: .now() + 3.0) {
+                        self.logger.info("...location info 3 second delay expires, send data now")
+                        completion(obj)
+                    }
+                    
+                }
+                catch {
+                    self.logger.log(level: .error, "locationInfo decode exception: \(error.localizedDescription)")
+                    completion(nil)
+                }
+            }
+        }
+        logger.info("Fetching location from API...")
+        task.resume()
+    }
+    
+    // NOTE: this web request doesn't include error handling and shouldn't be used as-is for production purposes
+    func fetchImage(url: String?, completion: @escaping (_ image: UIImage?) -> Void) {
+        guard let urlString = url, let url = URL(string: urlString) else {
+            completion(nil)
+            return
+        }
+
+        let task = self.session.dataTask(with: url) { (data, _, _) in
+            if let imageData = data, let image = UIImage(data: imageData) {
+                completion(image)
+            } else {
+                completion(nil)
+            }
+        }
+        task.resume()
+        
     }
 }
