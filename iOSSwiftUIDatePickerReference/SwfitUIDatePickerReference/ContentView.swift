@@ -100,8 +100,7 @@ struct ContentView: View {
                         .accentColor(.purple)
                         .background(RoundedRectangle(cornerRadius: 10)
                                         .fill(Color.purple)
-                                        .opacity(0.2)
-                                        .shadow(radius: 1, x: 4, y: 4))
+                                        .opacity(0.2))
                         .datePickerStyle(GraphicalDatePickerStyle())
                         .padding(20)
                 default:
