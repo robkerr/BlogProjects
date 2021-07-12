@@ -14,7 +14,7 @@ struct ContentView: View {
     var body: some View {
         GeometryReader { geom in
             RoundedRectangle(cornerRadius: 20.0)
-                .foregroundColor(viewModel.buttonColor)
+                .foregroundColor(viewModel.changingColor)
                 .frame(width: viewModel.largeSize ? 200 : 100,
                        height: viewModel.largeSize ? 100 : 50)
                 .rotationEffect(Angle.degrees(degrees))

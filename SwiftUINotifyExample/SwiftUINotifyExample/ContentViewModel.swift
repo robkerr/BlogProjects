@@ -8,15 +8,15 @@
 import SwiftUI
 
 class ContentViewModel: ObservableObject {
-    @Published var buttonColor = Color.blue
+    @Published var changingColor = Color.blue
     @Published var rotationAngle = 0.0
     @Published var largeSize = true
     private var changeSizeMessageObserver:NSObjectProtocol?
     
     init() {
         Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true, block: { _ in
-            self.buttonColor = self.randomColor()
-            self.rotationAngle = self.buttonColor.cgColor!.components![0] * 360.0
+            self.changingColor = self.randomColor()
+            self.rotationAngle = self.changingColor.cgColor!.components![0] * 360.0
         })
         
         changeSizeMessageObserver = NotificationCenter.default.addObserver(
