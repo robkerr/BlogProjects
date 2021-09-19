@@ -16,7 +16,7 @@ class CalculatorViewModel : NSObject, ObservableObject, Identifiable {
     var id = UUID()
 
     // MARK: - Interface
-    @Published var output = "0.0"  // current text to display in the output field
+    @Published var output = "Disconnected"  // current text to display in the output field
     @Published var connected = false  // true when BLE connection is active
 
     // MARK: - Calculations
@@ -67,6 +67,7 @@ class CalculatorViewModel : NSObject, ObservableObject, Identifiable {
     private var connectedPeripheral: CBPeripheral?
 
     func connectCalculator() {
+        output = "Connecting..."
         centralQueue = DispatchQueue(label: "test.discovery")
         centralManager = CBCentralManager(delegate: self, queue: centralQueue)
     }
@@ -114,9 +115,9 @@ extension CalculatorViewModel: CBCentralManagerDelegate {
         
         DispatchQueue.main.async {
             self.connected = false
+            self.output = "Disconnected"
         }
     }
-    
 }
 
 extension CalculatorViewModel : CBPeripheralDelegate {
@@ -154,6 +155,7 @@ extension CalculatorViewModel : CBPeripheralDelegate {
         
         DispatchQueue.main.async {
             self.connected = true
+            self.output = "Connected."
         }
     }
     
