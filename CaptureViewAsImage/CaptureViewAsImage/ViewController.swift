@@ -36,7 +36,12 @@ class ViewController: UIViewController {
             mail.setMessageBody("Here's my cool design attached!", isHTML: true)
             mail.mailComposeDelegate = self
             mail.addAttachmentData(jpegData, mimeType: "image/jpeg" , fileName: "mydesign.jpeg")
-            present(mail, animated: true)
+            let ismain = Thread.isMainThread
+            print("Are we on main thread already? \(ismain)")
+            DispatchQueue.main.async {
+                self.present(mail, animated: true)
+            }
+
         }
         else {
             print("Email cannot be sent")
