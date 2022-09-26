@@ -26,7 +26,8 @@ extension View {
 struct ContentView: View {
     
     init() {
-        if #available(iOS 16.0, *) {} else {
+        if #unavailable(iOS 16.0) {
+            print("### setting backgroundColor to .clear")
             UITableView.appearance().backgroundColor = .clear
         }
     }
